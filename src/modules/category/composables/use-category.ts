@@ -1,34 +1,33 @@
-import { ref, onBeforeMount } from 'vue'
+import { ref } from 'vue'
 import { CategoryAPI } from '@modules/category/api'
 import { useToast } from '@shared/composables/use-toast'
+import { parseError } from '@shared/utils/parseError'
+import { Product, CategoryDetails } from '@modules/category/types'
+
+const toast = useToast()
 
 export function useCategory() {
-  const categories = ref([])
-  const products = ref([])
+  const categories = ref<CategoryDetails[]>([])
+  const products = ref<Product[]>([])
   const loading = ref(false)
-
-  const toast = useToast()
 
   const fetchCatalog = async () => {
     loading.value = true
 
     try {
       const [cats, prods] = await Promise.all([
-        CategoryAPI.getAllCategories(),
+        CategoryAPI.getCategoriesById(),
         CategoryAPI.getAllProducts()
       ])
 
       categories.value = cats.items
       products.value = prods.items
-    } catch (e: any) {
-      const msg = e.message || 'Failed to load catalog'
-      toast.error(msg)
+    } catch (e: unknown) {
+      toast.error(parseError(e))
     } finally {
       loading.value = false
     }
   }
-
-  onBeforeMount(fetchCatalog)
 
   return {
     categories,
