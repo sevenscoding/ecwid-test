@@ -1,14 +1,14 @@
 import { api } from '@shared/api/client'
 import {
-  CategoriesInfoResponse,
+  CategoriesIdResponse,
   ProductsResponse,
   CategoryIdResponse,
   CategoryDetails
 } from '@modules/category/types'
 
 export class CategoryAPI {
-  static async getAllCategories(): Promise<CategoriesInfoResponse> {
-    return api.get<CategoriesInfoResponse>('/categories?responseFields=items(id)')
+  static async getAllCategories(): Promise<CategoriesIdResponse> {
+    return api.get<CategoriesIdResponse>('/categories?responseFields=items(id)')
   }
 
   static async getAllProducts(): Promise<ProductsResponse> {

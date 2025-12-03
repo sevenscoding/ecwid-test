@@ -8,6 +8,6 @@ export type CategoryDetails = {
   imageUrl?: string
 }
 
-export type CategoriesInfoResponse = {
+export type CategoriesIdResponse = {
   items: CategoryIdResponse[]
 }
