@@ -16,7 +16,7 @@ defineProps<Props>()
       :class="{ 'category-item--with-image': !!category.imageUrl }"
       :style="category.imageUrl ? {} : { background: generateGradient(category.id) }"
     >
-      <span class="category-item__label">{{ category.name ?? '-' }}</span>
+      <span class="category-item__label">{{ category?.name ?? '-' }}</span>
     </div>
   </div>
 </template>
@@ -32,7 +32,12 @@ defineProps<Props>()
   }
 
   .category-item__label {
+    max-width: 15rem;
     transition: 0.25s transform ease-in-out;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__card {
