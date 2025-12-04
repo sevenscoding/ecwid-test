@@ -1,5 +1,6 @@
 export type CategoryIdResponse = {
   id: number
+  parentId: number
 }
 
 export type CategoryDetails = {

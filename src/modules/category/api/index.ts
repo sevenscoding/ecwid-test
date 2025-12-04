@@ -8,18 +8,22 @@ import {
 
 export class CategoryAPI {
   static async getAllCategories(): Promise<CategoriesIdResponse> {
-    return api.get<CategoriesIdResponse>('/categories?responseFields=items(id)')
+    return api.get<CategoriesIdResponse>(
+      '/categories?withSubcategories=false&responseFields=items(id, parentId)'
+    )
   }
 
   static async getAllProducts(): Promise<ProductsResponse> {
-    return api.get('/products')
+    return api.get<ProductsResponse>('/products?responseFields=items(id,name,price,imageUrl)')
   }
 
   static async getCategoriesById(): Promise<{ items: CategoryDetails[] }> {
     const all = await CategoryAPI.getAllCategories()
 
+    const roots = all.items.filter(cat => cat.parentId === undefined)
+
     const results = await Promise.allSettled(
-      all.items.map((cat: CategoryIdResponse) =>
+      roots.map((cat: CategoryIdResponse) =>
         api.get<CategoryDetails>(`/categories/${cat.id}?responseFields=id,name,imageUrl`)
       )
     )
@@ -28,7 +32,7 @@ export class CategoryAPI {
       r.status === 'fulfilled'
         ? r.value
         : {
-            id: all.items[i].id,
+            id: roots[i].id,
             name: '',
             imageUrl: undefined
           }
