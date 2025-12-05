@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue'
-import { useRoute, RouterLink } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useProduct } from '@modules/product/composables/use-product'
-import { ROUTES } from '@app/types/routes'
 import BackArrowIcon from '@shared/components/icons/BackArrowIcon.vue'
+import LoadingSpinner from '@shared/components/LoadingSpinner.vue'
+import { useCartStore } from '@shared/stores/cart'
+
+const store = useCartStore()
 
 const route = useRoute()
+const router = useRouter()
 const id = Number(route.params.id)
 
 const { getProduct, product, loadingProduct } = useProduct()
@@ -14,27 +18,29 @@ onBeforeMount(() => getProduct(id))
 </script>
 
 <template>
-  <RouterLink :to="ROUTES.HOME" class="product-view__link product-view__back">
+  <div class="product-view__link product-view__back" @click="router.back()">
     <BackArrowIcon />
-    Back to Categories
-  </RouterLink>
-  <div class="product-view">
+    Back
+  </div>
+  <div v-if="loadingProduct" class="product-view__loading">
+    <LoadingSpinner />
+  </div>
+  <div v-else class="product-view">
     <div class="product-view__img">
       <img
         v-if="product?.imageUrl"
         :src="product.imageUrl"
         :alt="product.name"
-        loading="lazy"
         class="product-view__img-src"
       />
     </div>
     <div class="product-view__description">
       <h1>{{ product?.name ?? '-' }}</h1>
       <div v-html="product?.description" />
-      <div class="product-view__price">
-        {{ product?.price ?? '-' }}
-      </div>
-      <button class="product-view__btn">Buy</button>
+      <div class="product-view__price">{{ product?.price ?? '-' }}$</div>
+      <button v-if="product" class="product-view__btn" @click="store.add(product.id, product.name)">
+        Buy
+      </button>
     </div>
   </div>
 </template>
@@ -48,8 +54,30 @@ onBeforeMount(() => getProduct(id))
     gap: var(--indent-700);
   }
 
+  &__loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20rem;
+  }
+
+  &__price {
+    font-size: var(--font-size-400);
+  }
+
+  &__back {
+    display: flex;
+    align-items: center;
+    gap: var(--indent-200);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--gray-100);
+    }
+  }
+
   &__img {
-    max-width: 50%;
+    width: 50%;
 
     @media (max-width: 900px) {
       width: 100%;
@@ -64,10 +92,11 @@ onBeforeMount(() => getProduct(id))
 
   &__description {
     width: 50%;
-    padding: var(--indent-500);
+    padding: var(--indent-700);
 
     @media (max-width: 900px) {
       width: 100%;
+      padding: var(--indent-200);
     }
   }
 

@@ -6,7 +6,12 @@ type Props = {
   product: Product
 }
 
+type Emits = {
+  add: []
+}
+
 defineProps<Props>()
+const emit = defineEmits<Emits>()
 </script>
 
 <template>
@@ -34,7 +39,6 @@ defineProps<Props>()
     <div class="product-item__info">
       <div class="product-item__name">{{ product?.name ?? '-' }}</div>
       <div class="product-item__price">{{ product?.price ?? '-' }}$</div>
-      <button class="product-item__btn">Buy</button>
     </div>
   </div>
 </template>
@@ -53,22 +57,6 @@ defineProps<Props>()
 
   &:hover {
     transform: translateY(-4px);
-  }
-
-  &__btn {
-    width: 100%;
-    cursor: pointer;
-    padding: var(--indent-200);
-    border: 1px solid var(--color-gray-100);
-    border-radius: var(--radius-200);
-    font-size: var(--font-size-200);
-    background-color: var(--yellow);
-    font-weight: 600;
-    transition: background 0.2s;
-
-    &:hover {
-      background: var(--orange);
-    }
   }
 
   &__image-wrapper {

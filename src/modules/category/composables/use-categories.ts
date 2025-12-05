@@ -10,22 +10,22 @@ export function useCategories() {
   const categories = ref<CategoryDetails[]>([])
   const categoryName = ref('')
   const parentCategoryId = ref<number | null>(null)
-  const loadingProducts = ref(false)
+  const loadingCategories = ref(false)
 
   const getCategories = async (parentId: number = 0) => {
-    loadingProducts.value = true
+    loadingCategories.value = true
     try {
       const res = await CategoryAPI.getCategories(parentId)
       categories.value = res.items
     } catch (e) {
       toast.error(parseError(e))
     } finally {
-      loadingProducts.value = false
+      loadingCategories.value = false
     }
   }
 
   const getSubcategoryNameById = async (categoryId: number = 0) => {
-    loadingProducts.value = true
+    loadingCategories.value = true
     try {
       const res = await CategoryAPI.getCategoryNameById(categoryId)
 
@@ -36,13 +36,13 @@ export function useCategories() {
     } catch (e) {
       toast.error(parseError(e))
     } finally {
-      loadingProducts.value = false
+      loadingCategories.value = false
     }
   }
 
   return {
     categories,
-    loadingProducts,
+    loadingCategories,
     categoryName,
     parentCategoryId,
     getCategories,

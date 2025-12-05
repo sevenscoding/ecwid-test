@@ -6,8 +6,8 @@ const { messages } = useToast()
 
 <template>
   <div class="toast-container">
-    <div v-for="(msg, i) in messages" :key="i" class="toast">
-      {{ msg }}
+    <div v-for="(msg, i) in messages" :key="i" class="toast" :class="`toast--${msg.type}`">
+      {{ msg.message }}
     </div>
   </div>
 </template>
@@ -15,21 +15,31 @@ const { messages } = useToast()
 <style scoped lang="scss">
 .toast-container {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: var(--indent-400);
+  right: var(--indent-400);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--indent-300);
   z-index: 9999;
 }
 
 .toast {
-  background: #ff4d4f;
-  color: white;
-  padding: 12px 16px;
-  border-radius: 6px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  padding: var(--indent-300) var(--indent-400);
+  border-radius: var(--radius-200);
+  color: var(--white);
+  font-size: var(--font-size-150);
+  box-shadow: var(--shadow-100);
   animation: fadeIn 0.25s ease;
+  font-weight: 500;
+
+  &--error {
+    background: var(--red);
+  }
+
+  &--success {
+    background-color: var(--green);
+    color: var(--white);
+  }
 }
 
 @keyframes fadeIn {

@@ -9,6 +9,6 @@
 <style lang="scss" scoped>
 .layout {
   min-height: 100vh;
-  padding: var(--indent-700);
+  padding: 0 var(--indent-700);
 }
 </style>
