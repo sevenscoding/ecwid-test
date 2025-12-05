@@ -16,37 +16,38 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  watch(cart, v => localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(v)), { deep: true })
+  watch(
+    cart,
+    value => {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(value))
+    },
+    { deep: true }
+  )
 
   const add = (productId: number, productName: string) => {
     const item = cart.value.find(i => i.id === productId)
 
-    if (item) {
-      item.qty++
-    } else {
-      cart.value.push({ id: productId, qty: 1 })
-    }
+    if (item) item.qty++
+    else cart.value.push({ id: productId, qty: 1 })
 
     useToast().success(`${productName} added to cart`)
   }
 
-  const remove = (productId: number) => {
+  const decrease = (productId: number) => {
     const item = cart.value.find(i => i.id === productId)
-
     if (!item) return
-
-    if (item.qty > 1) {
-      item.qty--
-    } else {
-      cart.value = cart.value.filter(i => i.id !== productId)
-    }
+    if (item.qty > 1) item.qty--
+    else remove(productId)
   }
 
-  const clear = () => {
-    cart.value = []
+  const remove = (productId: number) => {
+    cart.value = cart.value.filter(i => i.id !== productId)
   }
 
-  const count = computed(() => cart.value.reduce((sum, item) => sum + item.qty, 0))
+  const clear = () => (cart.value = [])
 
-  return { cart, add, remove, clear, count }
+  const count = computed(() => cart.value.reduce((sum, i) => sum + i.qty, 0))
+  const ids = computed(() => cart.value.map(i => i.id))
+
+  return { cart, add, decrease, remove, clear, count, ids }
 })

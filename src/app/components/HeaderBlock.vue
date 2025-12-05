@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import CartIcon from '@shared/components/icons/CartIcon.vue'
 import { useCartStore } from '@shared/stores/cart'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import { ROUTES } from '@app/types/routes'
 
 const store = useCartStore()
+const route = useRoute()
 </script>
 
 <template>
   <header class="header">
-    <RouterLink :to="ROUTES.CART" class="header__cart">
+    <RouterLink v-if="route.path !== ROUTES.CART" :to="ROUTES.CART" class="header__cart">
       <CartIcon />
       <div class="header__cart-counter">{{ store.count }}</div>
     </RouterLink>
