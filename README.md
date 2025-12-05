@@ -1,5 +1,62 @@
-# Vue 3 + TypeScript + Vite
+# Ecwid Cart Integration (Vue 3 + Pinia)
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A lightweight cart module built with **Vue 3**, **Pinia**, and **Ecwid API**.  
+Provides product loading, cart synchronization, total price calculation, and clean state management.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+---
+
+## 🚀 Technologies
+
+- **Vue 3 (Composition API)**
+- **Vite**
+- **TypeScript**
+- **Pinia**
+- **Ecwid Storefront API**
+- **REST API client**
+- **ES Modules**
+
+---
+
+## 📦 Installation
+
+Clone the project:
+
+```bash
+git clone https://github.com/username/repo.git
+cd repo
+```
+
+Install dependencies:
+
+```bash
+pnpm install
+```
+
+---
+
+## ⚙️ Environment Variables
+
+Create `.env.local` and add:
+
+```env
+VITE_ECWID_STORE_ID=108362264
+VITE_ECWID_TOKEN=public_RiNvjTVVzKLhFNWyzR5fNY68u1GMHLEs
+```
+
+---
+
+## ▶️ Running the Project
+
+```bash
+pnpm dev
+```
+
+---
+
+## 🛒 Cart Features
+
+- Add / decrease / remove items
+- Total price calculation
+- Products loading via Ecwid
+- localStorage sync
+- clearCart() included
